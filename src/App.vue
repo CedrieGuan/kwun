@@ -1,15 +1,17 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import ProfileView from './components/ProfileView.vue';
 import ProfileEditor from './components/ProfileEditor.vue';
 import { decodeProfile } from './utils/onelink';
 import { Sparkles } from 'lucide-vue-next';
 
+const { t } = useI18n();
 const encodedData = ref(null);
 const decodedProfile = ref(null);
 const previewData = ref({
-  name: 'Preview Name',
-  bio: 'This is how your bio will look',
+  name: t('common.previewName'),
+  bio: t('common.previewBio'),
   links: [],
   socials: {}
 });
@@ -55,7 +57,7 @@ const handleUpdate = (newProfile) => {
                 <Sparkles class="w-8 h-8 text-white" />
               </div>
               <h1 class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                OneLink
+                {{ t('app.title') }}
               </h1>
             </div>
             
@@ -73,7 +75,7 @@ const handleUpdate = (newProfile) => {
                     <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
                     <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
                   </div>
-                  <span class="text-[10px] font-medium text-gray-500 uppercase tracking-widest">Live Preview</span>
+                  <span class="text-[10px] font-medium text-gray-500 uppercase tracking-widest">{{ t('app.livePreview') }}</span>
                   <div class="w-10"></div>
                 </div>
                 <div class="max-h-[700px] overflow-y-auto custom-scrollbar">

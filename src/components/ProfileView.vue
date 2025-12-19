@@ -42,7 +42,7 @@ const hasSocials = computed(() => {
 
       <!-- Header -->
       <div class="space-y-2">
-        <h1 class="text-3xl font-bold tracking-tight text-white">{{ data.name || 'Anonymous' }}</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-white">{{ data.name || $t('common.anonymous') }}</h1>
         <p class="text-gray-400 text-lg">{{ data.bio }}</p>
       </div>
 
@@ -76,7 +76,7 @@ const hasSocials = computed(() => {
       <!-- Footer -->
       <div class="pt-8">
         <a href="/" class="text-sm text-gray-500 hover:text-gray-300 transition-colors flex items-center gap-1">
-          Create your own OneLink
+          {{ $t('app.createOwn') }}
           <ExternalLink class="w-3 h-3" />
         </a>
       </div>
