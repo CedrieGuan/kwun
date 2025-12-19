@@ -43,12 +43,17 @@ const sendMessage = async () => {
       })
     });
 
-    if (!response.ok) throw new Error('Failed to fetch response');
-
     const data = await response.json();
-    messages.value.push({ role: 'ai', content: data.reply });
+
+    if (!response.ok) {
+      // Display the actual error message from the API
+      const errorMsg = data.error || 'Failed to get response from AI';
+      messages.value.push({ role: 'ai', content: `Error: ${errorMsg}` });
+    } else {
+      messages.value.push({ role: 'ai', content: data.reply });
+    }
   } catch (error) {
-    messages.value.push({ role: 'ai', content: 'Sorry, I encountered an error. Please check your OpenRouter API key.' });
+    messages.value.push({ role: 'ai', content: 'Network error: Unable to connect to the AI service. Please try again later.' });
   } finally {
     isLoading.value = false;
     scrollToBottom();
