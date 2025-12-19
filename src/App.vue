@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ProfileView from './components/ProfileView.vue';
 import ProfileEditor from './components/ProfileEditor.vue';
+import ChatDialog from './components/ChatDialog.vue';
 import { decodeProfile } from './utils/onelink';
 import { Sparkles } from 'lucide-vue-next';
 
@@ -87,6 +88,9 @@ const handleUpdate = (newProfile) => {
         </div>
       </div>
     </main>
+
+    <!-- AI Chat Assistant -->
+    <ChatDialog v-if="!isViewMode" :profile-context="previewData" />
   </div>
 </template>
 
