@@ -15,6 +15,7 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+.env.example
 
 # Binaries
 server
@@ -28,3 +29,4 @@ api/server
 *.njsproj
 *.sln
 *.sw?
+.env.example

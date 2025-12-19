@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:all": "concurrently \"npm run dev -- --port 3000\" \"cd api && CGO_ENABLED=0 go run local/main.go\"",
+    "dev:fe": "vite --port 3000",
+    "dev:go": "cd api && export $(cat .env | xargs) && CGO_ENABLED=0 go run ../cmd/dev/main.go",
+    "dev:all": "concurrently \"npm run dev:fe\" \"npm run dev:go\"",
     "build": "vite build",
     "preview": "vite preview"
   },
