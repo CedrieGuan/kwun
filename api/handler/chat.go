@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"os"
 )
 
 type ChatRequest struct {
@@ -28,7 +29,7 @@ func ChatHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	apiKey := "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"
+	apiKey := os.Getenv("OPENROUTER_API_KEY")
 	if apiKey == "" {
 		http.Error(w, "OPENROUTER_API_KEY is not set", http.StatusInternalServerError)
 		return
