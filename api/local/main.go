@@ -8,6 +8,14 @@ import (
 	"github.com/kwun/onelink-api/lib"
 )
 
+// Handler is the exported function that Vercel invokes for serverless deployment
+// Handler是Vercel调用的导出函数，用于无服务器部署
+func Handler(w http.ResponseWriter, r *http.Request) {
+	lib.Handler(w, r)
+}
+
+// main is used for local development only
+// main函数仅用于本地开发
 func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("No .env file found in .env, checking standard environment")
