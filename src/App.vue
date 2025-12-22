@@ -5,8 +5,9 @@ import ProfileView from './components/ProfileView.vue';
 import ProfileEditor from './components/ProfileEditor.vue';
 import ChatDialog from './components/ChatDialog.vue';
 import ImageAnalyzer from './components/ImageAnalyzer.vue';
+import JSONFormatter from './components/JSONFormatter.vue';
 import { decodeProfile } from './utils/onelink';
-import { Sparkles, FileImage, Link as LinkIcon } from 'lucide-vue-next';
+import { Sparkles, FileImage, Link as LinkIcon, Braces } from 'lucide-vue-next';
 
 const { t } = useI18n();
 const encodedData = ref(null);
@@ -33,6 +34,8 @@ onMounted(() => {
   const hash = window.location.hash.slice(1);
   if (hash === 'image-analyzer') {
     currentRoute.value = 'image-analyzer';
+  } else if (hash === 'json-formatter') {
+    currentRoute.value = 'json-formatter';
   }
 
   // Listen for hash changes
@@ -52,6 +55,11 @@ const handleUpdate = (newProfile) => {
 const navigateToImageAnalyzer = () => {
   window.location.hash = 'image-analyzer';
   currentRoute.value = 'image-analyzer';
+};
+
+const navigateToJSONFormatter = () => {
+  window.location.hash = 'json-formatter';
+  currentRoute.value = 'json-formatter';
 };
 
 const navigateToHome = () => {
@@ -98,6 +106,19 @@ const navigateToHome = () => {
             <FileImage class="w-5 h-5" />
             <span>Image Analyzer</span>
           </button>
+
+          <button
+            @click="navigateToJSONFormatter"
+            :class="[
+              'flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all duration-300',
+              currentRoute === 'json-formatter'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            ]"
+          >
+            <Braces class="w-5 h-5" />
+            <span>JSON Formatter</span>
+          </button>
         </div>
       </div>
     </nav>
@@ -105,6 +126,9 @@ const navigateToHome = () => {
     <main class="relative z-10">
       <!-- Image Analyzer Route -->
       <ImageAnalyzer v-if="currentRoute === 'image-analyzer'" />
+
+      <!-- JSON Formatter Route -->
+      <JSONFormatter v-else-if="currentRoute === 'json-formatter'" />
 
       <!-- Home Route: View Mode -->
       <div v-else-if="isViewMode" class="animate-in fade-in duration-1000">
