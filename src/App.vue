@@ -4,8 +4,9 @@ import { useI18n } from 'vue-i18n';
 import ProfileView from './components/ProfileView.vue';
 import ProfileEditor from './components/ProfileEditor.vue';
 import ChatDialog from './components/ChatDialog.vue';
+import ImageAnalyzer from './components/ImageAnalyzer.vue';
 import { decodeProfile } from './utils/onelink';
-import { Sparkles } from 'lucide-vue-next';
+import { Sparkles, FileImage, Link as LinkIcon } from 'lucide-vue-next';
 
 const { t } = useI18n();
 const encodedData = ref(null);
@@ -17,6 +18,9 @@ const previewData = ref({
   socials: {}
 });
 
+// Route management for different app sections
+const currentRoute = ref('home');
+
 onMounted(() => {
   const params = new URLSearchParams(window.location.search);
   const data = params.get('data');
@@ -24,12 +28,35 @@ onMounted(() => {
     encodedData.value = data;
     decodedProfile.value = decodeProfile(data);
   }
+
+  // Check for hash-based routing
+  const hash = window.location.hash.slice(1);
+  if (hash === 'image-analyzer') {
+    currentRoute.value = 'image-analyzer';
+  }
+
+  // Listen for hash changes
+  window.addEventListener('hashchange', () => {
+    const newHash = window.location.hash.slice(1);
+    currentRoute.value = newHash || 'home';
+  });
 });
 
 const isViewMode = computed(() => !!encodedData.value && !!decodedProfile.value);
 
 const handleUpdate = (newProfile) => {
   previewData.value = { ...newProfile };
+};
+
+// Navigation functions
+const navigateToImageAnalyzer = () => {
+  window.location.hash = 'image-analyzer';
+  currentRoute.value = 'image-analyzer';
+};
+
+const navigateToHome = () => {
+  window.location.hash = '';
+  currentRoute.value = 'home';
 };
 </script>
 
@@ -42,13 +69,49 @@ const handleUpdate = (newProfile) => {
       <div class="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-blue-500/5 blur-[100px] rounded-full"></div>
     </div>
 
+    <!-- Navigation Menu (only show when not in view mode) -->
+    <nav v-if="!isViewMode" class="relative z-20 border-b border-white/5 bg-[#0a0a0b]/80 backdrop-blur-xl sticky top-0">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-center gap-2 py-4">
+          <button
+            @click="navigateToHome"
+            :class="[
+              'flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all duration-300',
+              currentRoute === 'home'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            ]"
+          >
+            <LinkIcon class="w-5 h-5" />
+            <span>OneLink</span>
+          </button>
+          
+          <button
+            @click="navigateToImageAnalyzer"
+            :class="[
+              'flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all duration-300',
+              currentRoute === 'image-analyzer'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            ]"
+          >
+            <FileImage class="w-5 h-5" />
+            <span>Image Analyzer</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
     <main class="relative z-10">
-      <!-- View Mode -->
-      <div v-if="isViewMode" class="animate-in fade-in duration-1000">
+      <!-- Image Analyzer Route -->
+      <ImageAnalyzer v-if="currentRoute === 'image-analyzer'" />
+
+      <!-- Home Route: View Mode -->
+      <div v-else-if="isViewMode" class="animate-in fade-in duration-1000">
         <ProfileView :data="decodedProfile" />
       </div>
 
-      <!-- Editor Mode -->
+      <!-- Home Route: Editor Mode -->
       <div v-else class="container mx-auto px-4 py-12 md:py-20 lg:py-24">
         <div class="flex flex-col lg:flex-row gap-16 items-start justify-center">
           <!-- Left: Editor -->
@@ -89,8 +152,8 @@ const handleUpdate = (newProfile) => {
       </div>
     </main>
 
-    <!-- AI Chat Assistant -->
-    <ChatDialog v-if="!isViewMode" :profile-context="previewData" />
+    <!-- AI Chat Assistant (only show in home route editor mode) -->
+    <ChatDialog v-if="currentRoute === 'home' && !isViewMode" :profile-context="previewData" />
   </div>
 </template>
 
