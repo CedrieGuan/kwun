@@ -12,11 +12,12 @@
  * - component: Vue component to render
  */
 
-import { FileImage, Braces, QrCode, Binary } from 'lucide-vue-next';
+import { FileImage, Braces, QrCode, Binary, Languages } from 'lucide-vue-next';
 import ImageAnalyzer from '../components/ImageAnalyzer.vue';
 import JSONFormatter from '../components/JSONFormatter.vue';
 import QRCodeGenerator from '../components/QRCodeGenerator.vue';
 import Base64Tool from '../components/Base64Tool.vue';
+import Translator from '../components/Translator.vue';
 
 /**
  * Module definitions
@@ -54,6 +55,14 @@ export const modules = [
         icon: Binary,
         component: Base64Tool,
         description: 'Encode and decode text to/from Base64 format'
+    },
+    {
+        id: 'translator',
+        name: 'Translator',
+        route: 'translator',
+        icon: Languages,
+        component: Translator,
+        description: 'Translate text between multiple languages using DeepL'
     }
 ];
 
