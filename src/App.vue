@@ -6,8 +6,9 @@ import ProfileEditor from './components/ProfileEditor.vue';
 import ChatDialog from './components/ChatDialog.vue';
 import ImageAnalyzer from './components/ImageAnalyzer.vue';
 import JSONFormatter from './components/JSONFormatter.vue';
+import QRCodeGenerator from './components/QRCodeGenerator.vue';
 import { decodeProfile } from './utils/onelink';
-import { Sparkles, FileImage, Link as LinkIcon, Braces } from 'lucide-vue-next';
+import { Sparkles, FileImage, Link as LinkIcon, Braces, QrCode } from 'lucide-vue-next';
 
 const { t } = useI18n();
 const encodedData = ref(null);
@@ -36,6 +37,8 @@ onMounted(() => {
     currentRoute.value = 'image-analyzer';
   } else if (hash === 'json-formatter') {
     currentRoute.value = 'json-formatter';
+  } else if (hash === 'qr-generator') {
+    currentRoute.value = 'qr-generator';
   }
 
   // Listen for hash changes
@@ -60,6 +63,11 @@ const navigateToImageAnalyzer = () => {
 const navigateToJSONFormatter = () => {
   window.location.hash = 'json-formatter';
   currentRoute.value = 'json-formatter';
+};
+
+const navigateToQRGenerator = () => {
+  window.location.hash = 'qr-generator';
+  currentRoute.value = 'qr-generator';
 };
 
 const navigateToHome = () => {
@@ -119,6 +127,19 @@ const navigateToHome = () => {
             <Braces class="w-5 h-5" />
             <span>JSON Formatter</span>
           </button>
+
+          <button
+            @click="navigateToQRGenerator"
+            :class="[
+              'flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all duration-300',
+              currentRoute === 'qr-generator'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            ]"
+          >
+            <QrCode class="w-5 h-5" />
+            <span>QR Generator</span>
+          </button>
         </div>
       </div>
     </nav>
@@ -129,6 +150,9 @@ const navigateToHome = () => {
 
       <!-- JSON Formatter Route -->
       <JSONFormatter v-else-if="currentRoute === 'json-formatter'" />
+
+      <!-- QR Code Generator Route -->
+      <QRCodeGenerator v-else-if="currentRoute === 'qr-generator'" />
 
       <!-- Home Route: View Mode -->
       <div v-else-if="isViewMode" class="animate-in fade-in duration-1000">
