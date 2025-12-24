@@ -67,7 +67,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		"messages": []map[string]string{
 			{
 				"role":    "system",
-				"content": "You are an AI assistant for OneLink. You help users optimize their link-in-bio profiles. Here is the current profile context: " + req.Profile,
+				"content": "You are an AI assistant for Kwun Tools, a collection of web-based utilities. You help users with various tasks including image analysis, JSON formatting, QR code generation, Base64 encoding/decoding, and other web tools. Be helpful, concise, and friendly. Provide clear explanations and step-by-step guidance when needed.",
 			},
 			{
 				"role":    "user",
@@ -91,8 +91,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("Authorization", "Bearer "+apiKey)
-	httpReq.Header.Set("HTTP-Referer", "https://onelink-demo.vercel.app")
-	httpReq.Header.Set("X-Title", "OneLink Demo")
+	httpReq.Header.Set("HTTP-Referer", "https://kwun-tools.vercel.app")
+	httpReq.Header.Set("X-Title", "Kwun Tools")
 
 	resp, err := client.Do(httpReq)
 	if err != nil {
